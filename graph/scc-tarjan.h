@@ -1,5 +1,7 @@
 /*
- * Tarjan Algorithm
+ * Tarjan Algorithm on directed graph
+ * Finding SCC
+ * Last Edit : before 2013
  * */
 
 #define pback push_back

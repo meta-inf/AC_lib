@@ -1,6 +1,7 @@
 /*
  * Construct a feasible solution for 2-SAT problem using tarjan
  * Counting the solutions is possibly NPC.
+ * Last Edit : before 2013
  * */
 #include "scc-tarjan.h"
 
@@ -61,3 +62,10 @@ namespace SAT {
 		return true;
 	}
 }
+
+/*
+ * 方案生成部分的正确性：
+ * 	如果conf[x]被赋值，则x已经被赋值
+ *  完
+ * */
+

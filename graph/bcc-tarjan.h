@@ -1,75 +1,75 @@
-
-//finding cut points and bridges
+/*
+ * Tarjan algorithm on undirected graph
+ * Finding cut points, bridges, biconnected components & 2-edge-connected components
+ * (biconnected components refers to vertex-bcc; 2-edge-connected components refers to maximal bridgeless subgraphs.)
+ * Last Edit : 15-5-2013
+ * */
 
 int dfn[N], low[N], ts, n;
 long long f[N];
 
-void dfs (int x)
-{
+void dfs (int x, int ax = 0) {
 	int y, cc(0), ch(0);
 	dfn[x] = low[x] = ++ts;
-	for (edge *i = e[x]; i; i = i->n) if (i->v)
-	{
+	for (edge *i = e[x]; i; i = i->n) if (i->v) {
 		i->v = i->d->v = 0;
-		if (!dfn[y = i->t])
-		{
+		if (!dfn[y = i->t]) {
 			++ch;
-			dfs(y);
+			dfs(y, x);
 			// low[y] == dfn[x] : dumplicated edge -> x is a cut-point, i is not a bridge
-			if (x != 1 && low[y] >= dfn[x]) ;//x is a cut point
+			if (ax != 0 && low[y] >= dfn[x]) ;//x is a cut point
 			if (low[y] > dfn[x]) ;//i is a bridge
 			low[x] = min(low[x], low[y]);
 		} else low[x] = min(low[x], dfn[y]);
 	}
-	if (x == 1 && ch >= 2) ; // x is a cut point
+	if (ax == 0 && ch >= 2) ; // x is a cut point
 }
 int solve () { for (int i = 1; i <= n; ++i) if (!dfn[i]) dfs(i); }
 
 //in order to find edge biconnected components, just remove the bridges and do floodfill
-//in order to get vertex bcc, use the code below (the time complexity may degenerate to O(N^2))
+//in order to get vertex bcc, use the code below
 
-struct graph_t
-{
-	struct edge { int t, i; edge *n; } eb[M << 1], *ec, *e[N];
-	int valid[M], n, mcnt;
-	inline void link (int u, int v)
-	{ valid[++mcnt] = 1;
-		*ec = (edge){v, mcnt, e[u]}; e[u] = ec++;
-		*ec = (edge){u, mcnt, e[v]}; e[v] = ec++;
-	}
-	int dfn[N], low[N], id[N], st[N], color[N], top, icnt, cid, pvalid[N];
-	void pop (int x, int cid, int ad = 0)
-	{
-		int cnt(0); static int buff[N], vis[N], color[N];
-		while (st[top] != x) id[buff[++cnt] = st[top--]] = cid;
-		id[buff[++cnt] = st[top--]] = cid;
-		if (ad)
-		{
-			int add(0);
-			for (edge *i = e[ad]; i; i = i->n) add += id[i->t] == cid && i->t != ad; //~
-			if (add > 1) buff[++cnt] = ad;
+/*
+ * UPDATE@20130515 : The previous version is totally wrong. Code fixed. 
+ * The time complexity is reliable now. 
+ * Moderate tests, including large tests, have been taken; 
+ * yet this code has not been thoroughly tested.
+ * */
+
+struct edge { int s, t, i; edge *n; } ebf[M * 2], *ec = ebf, *e[N];
+inline void add_edge (int u, int v, int i) {
+	*ec = (edge){u, v, i, e[u]}; e[u] = ec++;
+	*ec = (edge){v, u, i, e[v]}; e[v] = ec++;
+}
+
+bool ans[N];
+int top, dfn[N], low[N], times, scnt, evis[M], sID[M];
+edge* S[M];
+
+void tarjan (int x, int ax = 0) {
+#define edges(x) ebf[x*2-2]
+	dfn[x] = low[x] = ++times;
+	for (edge *i = e[x]; i; i = i->n) {
+		int y = i->t;
+		if (evis[i->i]) continue;
+		S[++top] = i;
+		evis[i->i] = 1;
+		if (dfn[y]) {
+			low[x] = min(low[x], dfn[y]);
+			continue;
 		}
-	}
-	void dfs (int x, int ax)
-	{
-		static int tstamp = 0;
-		dfn[x] = low[x] = ++tstamp; st[++top] = x;
-		for (edge *i = e[x]; i; i = i->n) if (valid[i->i])
-		{
-			valid[i->i] = 0;
-			if (!dfn[i->t])
-			{
-				dfs(i->t, x); low[x] = min(low[x], low[i->t]);
-				(dfn[i->t] == low[i->t]) ? pop(i->t, id[x] = ++icnt, x) : void();
-			}
-			else low[x] = min(low[x], dfn[i->t]);
+		tarjan(y, x);
+		if (low[y] == dfn[x]) { // a Vertex-BCC with cutpoint x
+			for (++scnt; S[top]->s != x; sID[S[top--]->i] = scnt) ;
+			//assert(S[top]->s == x && S[top]->t == y);
+			sID[S[top--]->i] = scnt;
 		}
-		if (!ax) pop(x, ++icnt);
+		low[x] = min(low[x], low[y]);
 	}
-	void solve ()
-	{
-		for (int i = 1; i <= n; ++i) if (!dfn[i]) dfs(i, 0);
+	if (dfn[x] == low[x]) { // there should be only one edge connecting its ancestor
+		if (ax == 0) return;
+		//assert(S[top]->s == ax && S[top]->t == x);
+		sID[S[top--]->i] = ++scnt;
 	}
-	graph_t () { ec = eb; mcnt = 0; }
-} G;
+}
 
