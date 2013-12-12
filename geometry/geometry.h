@@ -20,9 +20,10 @@ struct point
 	LD x, y;
 	point (LD xx = 0, LD yy = 0) { x = xx, y = yy; }
 	LD len () { return hypot(x, y); }
+	LD angle () { return atan2(y, x); }
+	point normalize () { LD l = len(); return point(x / l, y / l); }
 	point oppo () { return point(y, -x); }
 	point rotate (LD t) { // counterclockwise
-		// the code below needs more testing.
 		LD cost = cos(t), sint = sin(t);
 		return point(x * cost - y * sint, x * sint + y * cost);
 	}

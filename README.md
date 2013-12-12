@@ -1,5 +1,6 @@
 AC_lib
 ======
 
-library for algorithm contests
+Library for algorithm contests.
+
 
