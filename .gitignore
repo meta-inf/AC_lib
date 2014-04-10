@@ -2,6 +2,7 @@
 /ext/
 
 # Compiled Object files
+.*.swp
 *.slo
 *.lo
 *.o

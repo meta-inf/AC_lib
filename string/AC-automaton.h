@@ -1,5 +1,5 @@
-//used when the alphabeta set is small
-//actually construct a trie graph
+// used when character set is small
+// trie graph
 struct node { bool fl; node *f, *n[26]; }
 	buff[N << 1], *rt = buff, *cr = buff + 1;
 inline node* new_node () { return cr++; }
@@ -22,7 +22,12 @@ void build_fail ()
 		for (int i = 0; i < alpha; ++i)
 		{
 			node *f = (t == rt) ? t : t->f->n[i];
-			if (t->n[i]) t->n[i]->f = f, que.push(t->n[i]);
+			if (t->n[i])
+			{
+				t->n[i]->f = f;
+				t->n[i]->fl |= f->fl || t->fl; // ,b - proof
+				que.push(t->n[i]);
+			}
 			else t->n[i] = f;
 		}
 	}
@@ -30,7 +35,6 @@ void build_fail ()
 
 //traditional implementation
 //when |SIGMA| is big
-//no need to worry about the constant factor
 struct node
 {
 	int id, fl;

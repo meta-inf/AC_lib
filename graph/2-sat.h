@@ -1,7 +1,7 @@
 /*
  * Construct a feasible solution for 2-SAT problem using tarjan
  * Counting the solutions is possibly NPC.
- * Last Edit : before 2013
+ * Last Edit : Feb 2014
  * */
 #include "scc-tarjan.h"
 
@@ -64,8 +64,12 @@ namespace SAT {
 }
 
 /*
- * 方案生成部分的正确性：
- * 	如果conf[x]被赋值，则x已经被赋值
- *  完
+ * 建立 2N 个点分别表示变量 i 为 true / false 的情况。
+ * 如果根据约束 (i, v) imp (j, v')，则连边 ((i, v) -> (j, v')) // v, v' \in {true, false}
+ * 缩 SCC 之后，如果 scc[(i, true)] == scc[(i, false)] 则无解
+ * 否则如下构造方案：将原图拓扑排序为tlist[1 .. cn]，之后按拓扑序
+ *		sel(scc[i]) = 0 iff (exists (i, j) in E, sel(j) = 0) // and sel(scc[i]) is not set
+ *      sel(scc[conf[i]]) = not sel(scc[i])
+ * 由于 2-SAT 构图有对称性，这一做法的正确性可归纳证明。
  * */
 

@@ -6,8 +6,7 @@ typedef long long LL;
 // gcd
 int gcd (int a, int b) { return b ? gcd(b, a % b) : a; }
 
-// Z*[p]原根
-LL getRoot (LL p)
+LL getRoot (LL p) // Z*[p]原根
 { // p is a prime
 	static vector<LL> fac;
 	decompose(p - 1, fac); // <-- phi(p)
@@ -21,8 +20,7 @@ LL getRoot (LL p)
 	return -1;
 }
 
-//离散模对数
-LL babyStep (LL a, LL b, LL p)
+LL babyStep (LL a, LL b, LL p) // 离散模对数
 {
 	LL sq = sqrt(p);
 	static map<LL, int> id; id.clear();
@@ -34,8 +32,7 @@ LL babyStep (LL a, LL b, LL p)
 	return -1;
 }
 
-//扩展GCD
-LL exGCD (LL a, LL b, LL &x, LL &y)
+LL exGCD (LL a, LL b, LL &x, LL &y) // 扩展GCD
 {
 	if (!b) { x = 1, y = 0; return a; }
 	LL d = exGCD(b, a % b, y, x);
@@ -43,8 +40,7 @@ LL exGCD (LL a, LL b, LL &x, LL &y)
 	return d;
 }
 
-//模线性方程
-void linerEqu (LL a, LL b, LL c, vector<LL> &res)
+void linerEqu (LL a, LL b, LL c, vector<LL> &res) // 模线性方程
 {
 	LL x, y, d = exGCD(a, c, x, y);
 	res.clear();
@@ -54,8 +50,7 @@ void linerEqu (LL a, LL b, LL c, vector<LL> &res)
 		res.push_back((x + i * t) % c);
 }
 
-//模线性方程组
-LL modequ (vector< pair<LL, LL> > &a)
+LL modequ (vector< pair<LL, LL> > &a) // 模线性方程组
 {
 	LL n(1), res(0);
 	for_(i, a) n *= i->second;
@@ -69,8 +64,7 @@ LL modequ (vector< pair<LL, LL> > &a)
 	return res;
 }
 
-//multiply in case of overflow
-LL mult (LL a, LL b, LL modu)
+LL mult (LL a, LL b, LL modu) // multiply in case of overflow
 {
 #ifndef LOCAL
 	LL res = 0;
@@ -88,16 +82,17 @@ LL mult (LL a, LL b, LL modu)
 	return (__int128)a * b % modu;
 #endif
 }
-//another approach with some precision error
-inline LL mult (LL a, LL b, LL c)
+
+inline LL mult (LL a, LL b, LL c) // another approach with some precision error
 {
 	LL t = (LL)(a / (__float128)c * b + 1e-3);
 	LL ret = a * b - c * t;
 	return (ret % c + c) % c;
 }
 
-//iterative fast power
-LL fpow (LL x, LL m, LL modu)
+inline LL mult (LL x, LL y, LL z) { return x * y % z; }
+
+LL fpow (LL x, LL m, LL modu) // iterative fast power
 {
 	LL res(1);
 	for (; m; m >>= 1)
@@ -108,13 +103,79 @@ LL fpow (LL x, LL m, LL modu)
 	return res;
 }
 
-//Rabin-Miller
-int rtest (LL x)
+int rtest (LL x) // Rabin-Miller
 {
-	for (int i = 0; i < 20; ++i)
+	int P[10] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
+	if (x < 100)
 	{
-		LL cr = rand() % (x - 1) + 1;
-		if (fpow(cr, x - 1, x) % x != 1) return 0;
+		for (int i = 2; i < x; ++i)
+			if (x % i == 0) return 0;
+		return 1;
 	}
+	for (int i = 0; i < 10; ++i)
+		if (fpow(P[i], x - 1, x) % x != 1) return 0;
+	
 	return 1;
 }
+
+inline LL C (LL n, LL m) // Using Lucas Theorem
+{
+	LL res(1);
+	while (n) {
+		int x = n % P, y = m % P;
+		if (x >= y)
+		{
+			LL cur = (LL)fac[x] * invfac[y] % P * invfac[x - y] % P;
+			res = res * cur % P;
+		}
+		else return 0;
+		n /= P, m /= P;
+	}
+	return res;
+}
+
+template <int N>
+struct primeTable // Euler Sieve
+{
+	int sdiv[N], primes[N], pcnt;
+	primeTable ()
+	{
+		pcnt = 0;
+		for (int i = 2; i < N; ++i)
+		{
+			if (!sdiv[i]) primes[++pcnt] = (sdiv[i] = i);
+			for (int j = 1; j <= pcnt && primes[j] * i < N; ++j)
+			{
+				sdiv[primes[j] * i] = primes[j];
+				if (i % primes[j] == 0) break;
+			}
+		}
+	}
+};
+
+struct frac // Fraction Class
+{
+	LL num, den;
+	frac (LL n, LL d) {
+		if (n == 0 || d == 0) { num = 0; den = 1; }
+		else { LL r = gcd(n, d); num = n / r; den = d / r; }
+		if (den < 0) num = -num, den = -den;
+	}
+	frac operator+ (const frac &b) {
+		return frac(num * b.den + den * b.num, den * b.den);
+	}
+	frac operator- (const frac &b) {
+		return frac(num * b.den - den * b.num, den * b.den);
+	}
+	frac operator* (const frac &b) {
+		return frac(num * b.num, den * b.den);
+	}
+	frac operator/ (const frac &b) {
+		return frac(num * b.den, den * b.num);
+	}
+};
+ostream& operator<< (ostream &a, const frac &b) {
+	return a << b.num << ' ' << b.den;
+}
+
+// vim:ts=4:fdm=syntax 

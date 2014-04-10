@@ -1,51 +1,81 @@
-//kd-tree by kAc
-//see http://en.wikipedia.org/wiki/K-d_tree
-//Last Edit : Before 2013
+/*
+   kd-tree.
+   check http://en.wikipedia.org/wiki/K-d_tree
+   Orthogonal range search : O(N^{(d-1)/d})
+   Nearest neighbor query : O(N^{(d-1)/d})
+*/
 const int K = 3, N = 100000;
 
-struct Tpoint {
+struct point {
 	long long dt[K], now;
 	long long get (int d) { return dt[d]; }
-} p[N];
-bool bynow (Tpoint a, Tpoint b) { return a.now < b.now; }
+} P[N];
+bool bynow (point a, point b) { return a.now < b.now; }
 
 int lmax[N], rmin[N];
 
-void build(int idx, int l, int r, int d)
+void build (int t, int l, int r, int d)
 {
-//build the tree node of p[l .. r] in demension d
+//build the tree node of P[l .. r] in demension d
 	if (l > r) return;
 	int m = l + r >> 1;
-	for (int i = l; i <= r; i++) p[i].now = p[i].get(d);
-	sort(p + l, p + r + 1, bynow); 
-	lmax[idx] = m != l ? p[m - 1].get(d) : 0xe0e0e0e0;
-	rmin[idx] = m != r ? p[m + 1].get(d) : 0x3f3f3f3f;
-	build(idx * 2, l, m - 1, (d + 1) % K);
-	build(idx * 2 + 1, m + 1, r, (d + 1) % K);
+	for (int i = l; i <= r; i++)
+	{
+		P[i].now = P[i].get(d);
+		for (int j = 0; j < dmax; ++j) // for range query
+			maxd[t][j] = max(maxd[t][j], P[i].get(j)),
+			mind[t][j] = min(mind[t][j], P[i].get(j));
+	}
+	sort(P + l, P + r + 1, bynow); 
+	lmax[t] = m != l ? P[m - 1].get(d) : -inf;
+	rmin[t] = m != r ? P[m + 1].get(d) : inf;
+	build(t * 2, l, m - 1, (d + 1) % K);
+	build(t * 2 + 1, m + 1, r, (d + 1) % K);
 }
-void renew(long long A)
+void update (long long A)
 {
 	if (A == 0) return;
 	if (A < ans) { ans = A; num = 1;}
 	else if (A == ans) ++num;
 }
-void query(int idx, int l, int r, Tpoint pt, int d)
+void query (int t, int l, int r, point pt, int d)
 {
-// queries min(dis(p[i],dt)) in O(k * n ^ (1 - 1/k)) time
 	if (l > r) return;
-	renew(dis(pt, p[l + r >> 1]));
+	update(dis(pt, P[l + r >> 1]));
 	if (l == r) return;
 	int m = l + r >> 1;
-	if (pt.get(d) <= lmax[idx]) {
-		query(idx * 2, l, m - 1, pt, (d + 1) % K);
-		if ((long long)(pt.get(d) - rmin[idx]) * (pt.get(d) - rmin[idx]) <= ans)
-			// It is possible to use the best crds of other dimension to improve the estimation
-			query(idx * 2 + 1, m + 1, r, pt, (d + 1) % K);
+	if (pt.get(d) <= lmax[t]) {
+		query(t * 2, l, m - 1, pt, (d + 1) % K);
+		if ((long long)(pt.get(d) - rmin[t]) * (pt.get(d) - rmin[t]) <= ans) // improvable
+			query(t * 2 + 1, m + 1, r, pt, (d + 1) % K);
 	}
 	else {
-		query(idx * 2 + 1, m + 1, r, pt, (d + 1) % K);
-		if ((long long)(pt.get(d) - lmax[idx]) * (pt.get(d) - lmax[idx]) <= ans)
-			query(idx * 2, l, m - 1, pt, (d + 1) % K);	
+		query(t * 2 + 1, m + 1, r, pt, (d + 1) % K);
+		if ((long long)(pt.get(d) - lmax[t]) * (pt.get(d) - lmax[t]) <= ans)
+			query(t * 2, l, m - 1, pt, (d + 1) % K);	
 	}
-		
 }
+
+
+// sketch of range query
+void rquery (int t, int l, int r, int QR) 
+{
+	if (l > r) return;
+	if (included(t, QR))
+	{
+		// do something 
+		return;
+	}
+	if (disjoint(t, QR))
+	{
+		return;
+	}
+	int m = l + r >> 1;
+	if (included(P[m], QR))
+	{
+		// do something
+	}
+	rquery(t * 2, l, m - 1, QR);
+	rquery(t * 2 + 1, m + 1, r, QR);
+}
+

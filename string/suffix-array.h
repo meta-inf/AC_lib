@@ -1,7 +1,7 @@
 /*
 	Suffix Array - Doubling Algorithm
 	Tested [ Correct ]
-	it is strongly recommended to write a naive program to check the code in exams
+	it is strongly recommended to write a brute force program to check the code in exams
 */
 int r[N], sa[N], rank[N], height[N];
 int wa[N], wb[N], ws[N], wv[N];
@@ -36,7 +36,8 @@ void da (int *r, int n, int m)
 			x[sa[i]] = cmp(y, sa[i - 1], sa[i], j) ? p - 1 : p++;
 	}
 }
-//call calheight(r, length(r))
+// call calheight(r, length(r))
+// LCP(i, SA[Rank[i] - 1]) >= LCP(i - 1, SA[Rank[i - 1] - 1]) - 1
 void calheight (int *r, int n)
 {
 	int i, j, k = 0;

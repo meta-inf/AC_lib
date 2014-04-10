@@ -1,7 +1,5 @@
 /*
- * semi-dynamic convex hull (remove not supported)
- * the CH is splited into lower and upper envelope, 
- * which is in most situation acceptable.
+ * dynamic convex hull (deletion not supported)
  * ~ <set>, <algorithm>
  * */
 

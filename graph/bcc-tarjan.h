@@ -30,10 +30,9 @@ int solve () { for (int i = 1; i <= n; ++i) if (!dfn[i]) dfs(i); }
 //in order to get vertex bcc, use the code below
 
 /*
- * UPDATE@20130515 : The previous version is totally wrong. Code fixed. 
- * The time complexity is reliable now. 
- * Moderate tests, including large tests, have been taken; 
- * yet this code has not been thoroughly tested.
+ * UPDATE@20130515 : The previous version is wrong. Code fixed. 
+ * The time complexity is now linear.
+ * further test may be needed.
  * */
 
 struct edge { int s, t, i; edge *n; } ebf[M * 2], *ec = ebf, *e[N];
