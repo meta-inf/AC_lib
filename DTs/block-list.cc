@@ -1,6 +1,5 @@
 /*
- * Full-featured block list
- * Last Edit : Before 2012
+ * block list (NOI05 sequence)
  * */
 #include <cstdio>
 #include <cstring>
