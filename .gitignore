@@ -9,6 +9,8 @@
 
 *.mkd
 *.pd
+*.pdf
+*.tex
 
 # Compiled Dynamic libraries
 *.so
