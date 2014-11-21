@@ -1,18 +1,30 @@
-lst = `find . -type f`.lines.map &:chomp
+lst = `find . -type f|grep -v ".pd$"`.lines.map &:chomp
 lst.sort!
 
 lastsec = ""
 
-puts "% AC_lib\n% dc\n"
+puts "% AC-LIB\n% dc\n"
 
+lst2 = []
 lst.each { |f|
 	File.open(f, "r") { |file|
 		s = file.gets
 		if not ((s.ascii_only?) and (/^\/\/@ / === s)) then
 			STDERR.puts("Ignoring file #{f}")
 		else
-			sec = f.split('/')[1]
-			title = s[4, 255]
+			lst2 = lst2 + [[f.split('/')[1], s[4, 255], f]]
+		end
+	}
+}
+lst2.sort!
+lst2.each { |f|
+	File.open(f[2], "r") { |file|
+		s = file.gets
+		if not ((s.ascii_only?) and (/^\/\/@ / === s)) then
+			STDERR.puts("Ignoring file #{f[2]}")
+		else
+			sec = f[0]
+			title = f[1]
 			if (sec != lastsec) then
 				puts "# #{sec}"
 				lastsec = sec

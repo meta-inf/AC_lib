@@ -1,0 +1,55 @@
+\contentsline {section}{Data-Structure}{3}{section*.2}
+\contentsline {subsection}{Binary Indexed Tree}{3}{section*.3}
+\contentsline {subsection}{ChairTree}{3}{section*.4}
+\contentsline {subsection}{Dynamic Convex Hull}{6}{section*.5}
+\contentsline {subsection}{Persistent Treap}{9}{section*.6}
+\contentsline {subsection}{Segment Tree}{9}{section*.7}
+\contentsline {subsection}{Segment Tree (Splittable)}{10}{section*.8}
+\contentsline {subsection}{Skew Heap (Mergeable Heap)}{13}{section*.9}
+\contentsline {subsection}{Splay Tree}{13}{section*.10}
+\contentsline {section}{Geometry}{16}{section*.11}
+\contentsline {subsection}{Half-plane Intersection}{16}{section*.12}
+\contentsline {subsection}{Header for Geometry}{19}{section*.13}
+\contentsline {subsection}{Planar Graph \& Point Location}{26}{section*.14}
+\contentsline {subsection}{kd-Tree}{32}{section*.15}
+\contentsline {section}{Graph}{34}{section*.16}
+\contentsline {subsection}{2-SAT}{34}{section*.17}
+\contentsline {subsection}{Blossom Algorithm}{36}{section*.18}
+\contentsline {subsection}{Costflow with lower bound}{39}{section*.19}
+\contentsline {subsection}{Dijkstra}{41}{section*.20}
+\contentsline {subsection}{Global Min-Cut}{42}{section*.21}
+\contentsline {subsection}{MST (Directed Graph)}{44}{section*.22}
+\contentsline {subsection}{MST (Directed Graph, V\^{}3 Approach)}{47}{section*.23}
+\contentsline {subsection}{MST with Degree Limit}{50}{section*.24}
+\contentsline {subsection}{Maxflow (Dinic)}{53}{section*.25}
+\contentsline {subsection}{MinCostMaxflow (SSP Approach)}{54}{section*.26}
+\contentsline {subsection}{MinCostMaxflow (Zkw Algorithm)}{55}{section*.27}
+\contentsline {subsection}{SPFA}{57}{section*.28}
+\contentsline {subsection}{Tarjan (BCC)}{58}{section*.29}
+\contentsline {subsection}{Tarjan (SCC)}{60}{section*.30}
+\contentsline {section}{Math}{61}{section*.31}
+\contentsline {subsection}{Factorial}{61}{section*.32}
+\contentsline {subsection}{Fast Fourier Transform}{62}{section*.33}
+\contentsline {subsection}{Gaussian Elimination}{63}{section*.34}
+\contentsline {subsection}{Header for Number Theory}{65}{section*.35}
+\contentsline {subsection}{Karatsuba Algorithm}{69}{section*.36}
+\contentsline {subsection}{Rho Decomposition}{70}{section*.37}
+\contentsline {subsection}{Simplex Algorithm}{71}{section*.38}
+\contentsline {subsection}{Simpson Integration}{74}{section*.39}
+\contentsline {section}{String}{75}{section*.40}
+\contentsline {subsection}{Aho-Corasick Automaton}{75}{section*.41}
+\contentsline {subsection}{Compressed Trie}{77}{section*.42}
+\contentsline {subsection}{Hash}{78}{section*.43}
+\contentsline {subsection}{Manacher Algorithm}{79}{section*.44}
+\contentsline {subsection}{Suffix Array (DA)}{79}{section*.45}
+\contentsline {subsection}{Suffix Array (Hash)}{82}{section*.46}
+\contentsline {subsection}{Suffix Automaton}{83}{section*.47}
+\contentsline {section}{Tree}{83}{section*.48}
+\contentsline {subsection}{Edge Decomposition}{83}{section*.49}
+\contentsline {subsection}{Hash (Tree)}{88}{section*.50}
+\contentsline {subsection}{Heavy-Light Decomposition}{88}{section*.51}
+\contentsline {subsection}{LCA}{92}{section*.52}
+\contentsline {subsection}{Link Cut Tree}{93}{section*.53}
+\contentsline {subsection}{Node Decomposition}{95}{section*.54}
+\contentsline {section}{Unclassified}{99}{section*.55}
+\contentsline {subsection}{Simulated Annealing}{99}{section*.56}
