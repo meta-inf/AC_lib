@@ -1,9 +1,13 @@
+# Usage:
+# ruby gen.rb > ret.pd
+# pandoc --toc --latex-engine=xelatex ret.pd -o ret.pdf --template=./pandoc-template.tex
+
 lst = `find . -type f|grep -v ".pd$"`.lines.map &:chomp
 lst.sort!
 
 lastsec = ""
 
-puts "% AC-LIB\n% dc\n"
+puts "% AC-LIB\n% fed_up\n"
 
 lst2 = []
 lst.each { |f|
@@ -38,5 +42,3 @@ lst2.each { |f|
 		end
 	}
 }
-
-# pandoc --toc --latex-engine=xelatex ret.pd -o ret.pdf --template=./pandoc-template.tex
