@@ -1,6 +1,9 @@
 # Directories
 /ext/
 
+.gitignore
+.directory
+
 # Compiled Object files
 .*.swp
 *.slo
